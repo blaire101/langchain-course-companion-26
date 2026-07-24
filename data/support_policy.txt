@@ -1,0 +1,5 @@
+Acme Cloud Support Policy
+
+Priority 1 incidents receive an initial response within thirty minutes.
+Priority 2 incidents receive an initial response within four hours.
+Standard questions receive a response within one business day.

@@ -1,0 +1,5 @@
+Acme Cloud Refund Policy
+
+New customers may request a full refund within fourteen calendar days of their first paid subscription.
+Renewals are non-refundable unless required by local law.
+Refund requests must include the account email and invoice number.

@@ -1,0 +1,5 @@
+Acme Cloud Product Guide
+
+The Starter plan costs 29 USD per month and includes five users and standard email support.
+The Business plan costs 99 USD per month and includes unlimited users, audit logs, API access, and priority support.
+The Enterprise plan has custom pricing and includes single sign-on, dedicated support, and configurable data retention.
