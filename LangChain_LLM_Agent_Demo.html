@@ -1,0 +1,1712 @@
+<!DOCTYPE html>
+
+<html><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>LangChain Final Demo — Customer Support Copilot</title>
+<style>
+:root{--bg:#10161c;--card:#18222c;--card2:#1e2b36;--text:#edf3f7;--muted:#9fb0bf;--line:#30414e}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;line-height:1.55}.wrap{max-width:1100px;margin:auto;padding:22px 18px 70px}h1{font-size:25px;margin:0}header p{color:var(--muted);margin:4px 0 12px}.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);padding:9px 11px;border-radius:10px}button,select,input{font:inherit}.theme,.stop,.speak{border:1px solid #46667e;background:#1c2c38;color:#9bcbe6;border-radius:999px;cursor:pointer}.theme,.stop{padding:6px 10px}.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.tab{border:1px solid var(--line);background:var(--card);color:var(--text);padding:11px;border-radius:11px;font-weight:750;cursor:pointer}.tab.active{background:linear-gradient(135deg,#286fa4,#4b94c4);border-color:transparent}.panel{display:none}.panel.active{display:block}.card{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:14px;margin:10px 0}.flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px}.flow span{padding:7px 9px;border:1px solid var(--line);background:var(--card2);border-radius:8px;font-size:11.5px}.flow b{color:#748899}.major{margin:11px 0;border-radius:12px;overflow:hidden}.major>summary{list-style:none;display:grid;grid-template-columns:40px 1fr 25px;gap:10px;align-items:center;padding:9px 12px;background:linear-gradient(105deg,#173f5f,#245f85 46%,#3f98c5);cursor:pointer}.major>summary::-webkit-details-marker,.nb>summary::-webkit-details-marker{display:none}.major>summary b{font-size:16px}.major small{display:block;color:#d8e9f3;font-size:10.5px}.num{width:36px;height:36px;display:grid;place-items:center;border-radius:10px;background:rgba(255,255,255,.14);font-weight:850}.body{background:var(--card);border:1px solid var(--line);border-top:0;padding:12px}.line{display:flex;justify-content:space-between;gap:10px;font-size:12.5px}.speak{width:26px;height:26px;flex:0 0 26px}.nb{margin-top:10px;border:1px solid var(--line);border-radius:9px;overflow:hidden}.nb>summary{list-style:none;display:grid;grid-template-columns:27px 1fr 20px;gap:7px;align-items:center;padding:8px 10px;background:#1b2a35;cursor:pointer}.nb>summary small{display:block;color:#8395a4;font-size:9.5px}.nbi{width:24px;height:24px;display:grid;place-items:center;background:#263c4a;border-radius:7px;color:#72b9e2}.nbrow{display:grid;grid-template-columns:55px 1fr}.prompt{background:#101820;color:#4fa7d6;font:10px Menlo,Consolas,monospace;padding:11px 6px;text-align:right}pre{margin:0;background:#0b1117;color:#dce6ed;border-left:1px solid var(--line);padding:11px 13px;overflow:auto;font:10.8px/1.55 Menlo,Consolas,monospace;max-height:420px}table{width:100%;border-collapse:collapse;font-size:12px}th,td{border:1px solid var(--line);padding:8px;vertical-align:top}th{background:#203647;color:#9bcbe6}.cell{display:flex;justify-content:space-between;gap:6px}.light{--bg:#f4f6f8;--card:#fff;--card2:#f6f9fb;--text:#1d2935;--muted:#667085;--line:#d9e3ea}.light .tab{background:#fff;color:#334155}.light .tab.active{color:#fff;background:linear-gradient(135deg,#2e739e,#4c97c1)}.light .nb>summary{background:#eef6fb}.light .nb>summary b{color:#286f9b}.light .prompt{background:#f6f8fa;color:#2f7da8}.light pre{background:#17212b;color:#e7edf3}.light th{background:#eaf4fa;color:#245f85}.light .theme,.light .stop,.light .speak{background:#f5fafd;color:#2d77a3;border-color:#bdd7e7}
+@media(max-width:760px){.tabs{grid-template-columns:1fr}}
+</style><style id="complete-code-v2-styles">
+.tabs{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+.code-cell-v2{margin:11px 0 13px;border:1px solid #314452;border-radius:10px;overflow:hidden;background:#111820;box-shadow:0 5px 14px rgba(0,0,0,.10)}
+.code-summary-v2{list-style:none;display:grid;grid-template-columns:28px minmax(0,1fr) 22px;gap:8px;align-items:center;min-height:44px;padding:8px 10px;cursor:pointer;background:#1B2A35;border-bottom:1px solid transparent}
+.code-cell-v2[open]>.code-summary-v2{border-bottom-color:#314452}.code-summary-v2::-webkit-details-marker{display:none}
+.code-icon-v2{width:25px;height:25px;display:grid;place-items:center;border-radius:7px;background:#263C4A;color:#78BDE2;font-family:Menlo,Consolas,monospace;font-size:12px}
+.code-summary-copy-v2 b{display:block;color:#9CCDE8!important;font-size:11.8px!important}.code-summary-copy-v2 small{display:block;color:#8295A5;font-size:9.5px;margin-top:1px}
+.code-chevron-v2{color:#7D91A0;font-size:20px;transition:.15s}.code-cell-v2[open] .code-chevron-v2{transform:rotate(90deg)}
+.code-body-v2{background:#0E151C}.nb-row-v2{display:grid;grid-template-columns:58px minmax(0,1fr)}
+.nb-prompt-v2{padding:12px 7px 0 6px;text-align:right;background:#121A21;color:#52A7D4;font:10px Menlo,Consolas,"SFMono-Regular",monospace}
+.code-pre-v2{margin:0!important;padding:12px 14px!important;max-height:520px!important;overflow:auto!important;border:0!important;border-left:1px solid #314452!important;border-radius:0!important;background:#0B1117!important;color:#DDE6ED!important;font:10.8px/1.58 Menlo,Consolas,"SFMono-Regular",monospace!important;white-space:pre!important}
+.io-block-v2{display:grid;grid-template-columns:58px minmax(0,1fr);border-top:1px dashed #2B3C48}.io-label-v2{padding:9px 7px;text-align:right;background:#121A21;color:#D7BA7D;font:10px Menlo,Consolas,monospace}
+.io-pre-v2{margin:0!important;padding:9px 13px!important;border:0!important;border-left:1px solid #314452!important;background:#101820!important;color:#CBD6DF!important;font:10.5px/1.5 Menlo,Consolas,monospace!important;white-space:pre-wrap!important;overflow:auto!important}
+.output-block-v2 .io-label-v2{color:#E28A66}.output-pre-v2{color:#C7D8C9!important}
+.code-note-v2{padding:8px 12px 9px 70px;border-top:1px solid #2E3E49;background:#17232D;color:#91A2B1;font-size:10.5px}
+.python-code-v2 .tok-comment{color:#6A9955}.python-code-v2 .tok-keyword{color:#C586C0}.python-code-v2 .tok-string{color:#CE9178}.python-code-v2 .tok-number{color:#B5CEA8}.python-code-v2 .tok-func{color:#DCDCAA}.python-code-v2 .tok-class{color:#4EC9B0}.python-code-v2 .tok-builtin{color:#4FC1FF}.python-code-v2 .tok-decorator{color:#D7BA7D}
+.complete-intro-v2{background:linear-gradient(135deg,#172B3A,#1A2530);border:1px solid #314452;border-left:4px solid #4B94C4;border-radius:11px;padding:13px 14px;margin-bottom:12px}.complete-intro-v2 h3{margin:0 0 5px;font-size:15px}.complete-intro-v2 p{margin:3px 0;color:#A9B7C3;font-size:12.3px}
+.step-divider-v2{margin:18px 0 9px;padding:8px 11px;border-radius:8px;background:#173F5F;color:#fff;font-size:12px;font-weight:800}
+.light .code-cell-v2{background:#fff;border-color:#D6E1E8;box-shadow:0 4px 12px rgba(16,24,40,.045)}.light .code-summary-v2{background:#EEF6FB}.light .code-summary-copy-v2 b{color:#286F9B!important}.light .code-summary-copy-v2 small{color:#72808C}.light .code-icon-v2{background:#DFEDF5;color:#2F7DA8}.light .code-body-v2{background:#fff}.light .nb-prompt-v2,.light .io-label-v2{background:#F6F8FA;color:#2F7DA8}.light .code-pre-v2{background:#17212B!important;border-left-color:#D6E1E8!important}.light .io-pre-v2{background:#F9FBFC!important;color:#475467!important;border-left-color:#D6E1E8!important}.light .output-pre-v2{color:#3F6446!important}.light .code-note-v2{background:#F7FAFC;color:#667085;border-color:#D6E1E8}.light .complete-intro-v2{background:#F4F9FD;border-color:#C8DDEA}.light .complete-intro-v2 p{color:#667085}.light .step-divider-v2{background:#E8F2FA;color:#245F85}
+@media(max-width:760px){.tabs{grid-template-columns:repeat(2,minmax(0,1fr))!important}}@media(max-width:520px){.tabs{grid-template-columns:1fr!important}.nb-row-v2,.io-block-v2{grid-template-columns:44px minmax(0,1fr)}.code-note-v2{padding-left:55px}}
+</style><style id="v3-beginner-polish">
+/* =========================================================
+   V3 — compact learning headers
+   ========================================================= */
+.major{
+  margin:8px 0!important;
+  border-radius:10px!important;
+  overflow:hidden!important;
+}
+.major>summary{
+  min-height:46px!important;
+  grid-template-columns:32px minmax(0,1fr) 20px!important;
+  gap:9px!important;
+  padding:7px 10px!important;
+  background:linear-gradient(100deg,#214B68 0%,#2E6C8E 58%,#4B92B2 100%)!important;
+  border:1px solid rgba(255,255,255,.06)!important;
+  border-radius:10px!important;
+}
+.major[open]>summary{
+  border-radius:10px 10px 0 0!important;
+}
+.major>summary b{
+  color:#F5FAFD!important;
+  font-size:13.5px!important;
+  line-height:1.25!important;
+  letter-spacing:.05px!important;
+}
+.major>summary small{
+  color:#CFE1EA!important;
+  font-size:9.7px!important;
+  margin-top:2px!important;
+}
+.major .num{
+  width:30px!important;
+  height:30px!important;
+  border-radius:8px!important;
+  font-size:11px!important;
+  background:rgba(255,255,255,.12)!important;
+  color:#F4FAFD!important;
+  box-shadow:none!important;
+}
+.major .body{
+  padding:10px 11px!important;
+}
+.major .line{
+  font-size:11.5px!important;
+  color:#AFC0CC!important;
+}
+
+/* Light theme title harmony */
+.light .major>summary{
+  background:linear-gradient(100deg,#E7F2F8 0%,#DCECF5 58%,#D1E6F1 100%)!important;
+  border-color:#C9DDE8!important;
+}
+.light .major>summary b{
+  color:#234E69!important;
+}
+.light .major>summary small{
+  color:#5D7B8E!important;
+}
+.light .major .num{
+  background:#CFE3EE!important;
+  color:#285A77!important;
+}
+
+/* =========================================================
+   Beginner concept cards for Complete Code
+   ========================================================= */
+.beginner-map-v3{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin:10px 0 14px;
+}
+.beginner-card-v3{
+  border:1px solid #314452;
+  background:#18232D;
+  border-radius:10px;
+  padding:10px 11px;
+}
+.beginner-card-v3 strong{
+  display:block;
+  color:#9CCDE8;
+  font-size:11.5px;
+  margin-bottom:3px;
+}
+.beginner-card-v3 p{
+  margin:0;
+  color:#AAB8C4;
+  font-size:10.5px;
+  line-height:1.45;
+}
+.beginner-card-v3 code{
+  font-family:Menlo,Consolas,monospace;
+  color:#D7BA7D;
+  background:#111A21;
+  padding:1px 4px;
+  border-radius:4px;
+}
+
+.step-explain-v3{
+  margin:8px 0 10px;
+  padding:10px 11px;
+  border:1px solid #30414E;
+  border-left:3px solid #4C91B6;
+  border-radius:8px;
+  background:#17222B;
+}
+.step-explain-v3 h4{
+  margin:0 0 5px;
+  color:#DCECF5;
+  font-size:12px;
+}
+.step-explain-v3 p{
+  margin:3px 0;
+  color:#AAB8C3;
+  font-size:10.7px;
+  line-height:1.5;
+}
+.step-explain-v3 b{
+  color:#D8E8F2;
+}
+.step-mini-flow-v3{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+  align-items:center;
+  margin-top:7px;
+}
+.step-mini-flow-v3 span{
+  padding:5px 7px;
+  border:1px solid #344956;
+  border-radius:7px;
+  background:#1D2B35;
+  color:#C8D5DE;
+  font-size:9.8px;
+}
+.step-mini-flow-v3 em{
+  color:#748A99;
+  font-style:normal;
+}
+
+.light .beginner-card-v3{
+  background:#FFFFFF;
+  border-color:#D7E2E9;
+}
+.light .beginner-card-v3 strong{color:#286F9B}
+.light .beginner-card-v3 p{color:#667085}
+.light .beginner-card-v3 code{
+  background:#F1F5F8;
+  color:#8A5B1F;
+}
+.light .step-explain-v3{
+  background:#F7FAFC;
+  border-color:#D7E2E9;
+  border-left-color:#4C91B6;
+}
+.light .step-explain-v3 h4{color:#244E68}
+.light .step-explain-v3 p{color:#667085}
+.light .step-explain-v3 b{color:#344054}
+.light .step-mini-flow-v3 span{
+  background:#F2F7FA;
+  border-color:#D8E4EB;
+  color:#415567;
+}
+.light .step-mini-flow-v3 em{color:#98A2B3}
+
+@media(max-width:820px){
+  .beginner-map-v3{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:560px){
+  .beginner-map-v3{grid-template-columns:1fr}
+}
+</style><style id="v4-simple-learning">
+.top-explain-v4{
+  margin:12px 0 14px;
+  padding:13px 15px;
+  border:1px solid #345266;
+  border-left:4px solid #4B94C4;
+  border-radius:11px;
+  background:#17232D;
+}
+.top-explain-head-v4{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+}
+.top-explain-v4 h2{
+  margin:1px 0 0;
+  font-size:15px;
+  color:#DDEBF3;
+}
+.eyebrow-v4{
+  display:block;
+  color:#6EAED0;
+  font-size:8.5px;
+  letter-spacing:1px;
+  font-weight:800;
+}
+.top-explain-v4 p{
+  margin:7px 0 0;
+  color:#B8C7D2;
+  font-size:11px;
+  line-height:1.55;
+}
+.top-listen-v4{
+  width:auto!important;
+  min-width:76px;
+  height:29px!important;
+  padding:0 9px!important;
+  border-radius:999px!important;
+  font-size:10px!important;
+}
+
+.quick-idea-v4{
+  margin-bottom:7px;
+  color:#C2D0D9;
+  font-size:11px;
+  font-weight:650;
+}
+.quick-io-v4{
+  display:grid;
+  grid-template-columns:52px minmax(0,1fr);
+  margin:6px 0;
+  border:1px solid #30424F;
+  border-radius:7px;
+  overflow:hidden;
+}
+.quick-label-v4{
+  padding:7px 5px;
+  background:#1B2A34;
+  color:#79B8DA;
+  font:9px Menlo,Consolas,monospace;
+  text-align:right;
+}
+.quick-io-v4 pre{
+  margin:0!important;
+  padding:7px 9px!important;
+  border:0!important;
+  background:#111920!important;
+  color:#CBD7E0!important;
+  font:10px/1.45 Menlo,Consolas,monospace!important;
+  white-space:pre-wrap!important;
+}
+.output-v4 .quick-label-v4{color:#D99A79}
+.output-v4 pre{color:#BFD5C4!important}
+.quick-code-v4{
+  margin:6px 0;
+  border:1px solid #30424F;
+  border-radius:7px;
+  overflow:hidden;
+}
+.quick-code-v4 summary{
+  list-style:none;
+  padding:6px 9px;
+  background:#1B2A34;
+  color:#9CCDE8;
+  cursor:pointer;
+  font-size:10px;
+  font-weight:750;
+}
+.quick-code-v4 summary::-webkit-details-marker{display:none}
+.quick-code-v4 pre{
+  margin:0!important;
+  padding:9px 11px!important;
+  max-height:330px!important;
+  border:0!important;
+  background:#0B1117!important;
+  color:#DDE6ED!important;
+  font:10.2px/1.52 Menlo,Consolas,monospace!important;
+}
+
+.simple-final-intro-v4{
+  margin-bottom:10px;
+  padding:12px 13px;
+  border:1px solid #314452;
+  border-radius:10px;
+  background:#17232D;
+}
+.simple-final-intro-v4 h3{
+  margin:0 0 3px;
+  font-size:14px;
+  color:#DCEAF2;
+}
+.simple-final-intro-v4 p{
+  margin:0 0 8px;
+  color:#A9B8C3;
+  font-size:10.8px;
+}
+.simple-flow-v4{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:5px;
+}
+.simple-flow-v4 span{
+  padding:5px 7px;
+  border:1px solid #35505F;
+  border-radius:7px;
+  background:#1D2C36;
+  color:#C7D6DF;
+  font-size:9.5px;
+}
+.simple-flow-v4 b{
+  color:#718797;
+  font-size:9px;
+}
+.simple-step-v4{
+  margin:8px 0;
+  padding:10px;
+  border:1px solid #30414E;
+  border-radius:9px;
+  background:#16212A;
+}
+.simple-step-v4 h4{
+  margin:0 0 7px;
+  color:#A9D1E6;
+  font-size:12px;
+}
+.simple-io-v4{
+  margin:5px 0;
+  display:grid;
+  grid-template-columns:54px minmax(0,1fr);
+  border:1px solid #30414E;
+  border-radius:7px;
+  overflow:hidden;
+}
+.simple-io-v4 b{
+  padding:7px 6px;
+  background:#1D2B35;
+  color:#7CB7D5;
+  font:9px Menlo,Consolas,monospace;
+  text-align:right;
+}
+.simple-io-v4 pre{
+  margin:0!important;
+  padding:7px 9px!important;
+  border:0!important;
+  background:#101820!important;
+  color:#CBD7E0!important;
+  font:10px/1.45 Menlo,Consolas,monospace!important;
+  white-space:pre-wrap!important;
+}
+.simple-out-v4 b{color:#D99A79}
+.simple-out-v4 pre{color:#BFD5C4!important}
+.simple-code-v4{
+  margin:5px 0;
+  border:1px solid #30414E;
+  border-radius:7px;
+  overflow:hidden;
+}
+.simple-code-v4 summary{
+  list-style:none;
+  padding:6px 9px;
+  background:#1B2A34;
+  color:#9CCDE8;
+  font-size:10px;
+  font-weight:750;
+  cursor:pointer;
+}
+.simple-code-v4 summary::-webkit-details-marker{display:none}
+.simple-code-v4 pre{
+  margin:0!important;
+  padding:9px 11px!important;
+  max-height:500px!important;
+  border:0!important;
+  background:#0B1117!important;
+  color:#DDE6ED!important;
+  font:10.2px/1.52 Menlo,Consolas,monospace!important;
+}
+
+/* syntax */
+.python-code-v4 .tok-comment{color:#6A9955}
+.python-code-v4 .tok-keyword{color:#C586C0}
+.python-code-v4 .tok-string{color:#CE9178}
+.python-code-v4 .tok-number{color:#B5CEA8}
+.python-code-v4 .tok-func{color:#DCDCAA}
+.python-code-v4 .tok-builtin{color:#4FC1FF}
+.python-code-v4 .tok-decorator{color:#D7BA7D}
+
+/* light */
+.light .top-explain-v4,
+.light .simple-final-intro-v4,
+.light .simple-step-v4{
+  background:#FFFFFF;
+  border-color:#D6E2E9;
+}
+.light .top-explain-v4 h2,
+.light .simple-final-intro-v4 h3{color:#244E68}
+.light .top-explain-v4 p,
+.light .simple-final-intro-v4 p{color:#667085}
+.light .quick-idea-v4{color:#475467}
+.light .quick-label-v4,
+.light .simple-io-v4 b,
+.light .quick-code-v4 summary,
+.light .simple-code-v4 summary{
+  background:#EEF5F9;
+  color:#2D759E;
+}
+.light .quick-io-v4 pre,
+.light .simple-io-v4 pre{
+  background:#F9FBFC!important;
+  color:#475467!important;
+}
+.light .simple-flow-v4 span{
+  background:#F2F7FA;
+  border-color:#D7E3EA;
+  color:#405566;
+}
+.light .simple-step-v4 h4{color:#286F9B}
+</style><style id="v5-theme-and-learning">
+/* Concept cards */
+.concept-intro-v5{margin:0 0 8px;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+.concept-intro-v5 h3{margin:0 0 3px;font-size:14px;color:var(--text)}
+.concept-intro-v5 p{margin:0;color:var(--muted);font-size:10.8px}
+.concept-grid-v5{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-bottom:12px}
+.concept-card-v5{padding:9px 10px;border:1px solid var(--line);border-radius:9px;background:var(--card)}
+.concept-card-v5 strong{display:block;color:#79B5D5;font-size:11.3px}
+.concept-card-v5 span{display:block;margin:1px 0 4px;color:var(--text);font-size:10.4px;font-weight:650}
+.concept-card-v5 p{margin:0;color:var(--muted);font-size:9.8px;line-height:1.42}
+
+/* Final demo */
+.final-intro-v5,.final-section-v5{border:1px solid var(--line);background:var(--card);border-radius:10px}
+.final-intro-v5{padding:11px 12px;margin-bottom:9px}
+.final-intro-v5 h3{margin:0 0 3px;font-size:14px}
+.final-intro-v5 p{margin:0 0 8px;color:var(--muted);font-size:10.8px}
+.final-flow-v5{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.final-flow-v5 span{padding:5px 7px;border-radius:7px;border:1px solid var(--line);background:var(--card2);font-size:9.5px}
+.final-flow-v5 b{color:var(--muted);font-size:9px}
+
+.final-section-v5{margin:8px 0;padding:10px}
+.final-section-v5 h4{margin:0 0 4px;font-size:12px;color:#79B5D5}
+.final-intro-text-v5{margin:0 0 7px;color:var(--muted);font-size:10.5px;line-height:1.45}
+
+.io-row-v5{display:grid;grid-template-columns:55px minmax(0,1fr);margin:5px 0;border:1px solid var(--line);border-radius:7px;overflow:hidden}
+.io-row-v5>b{padding:7px 6px;background:var(--card2);color:#79B5D5;font:9px Menlo,Consolas,monospace;text-align:right}
+.io-row-v5>pre{margin:0!important;padding:7px 9px!important;border:0!important;background:var(--card)!important;color:var(--text)!important;font:10px/1.45 Menlo,Consolas,monospace!important;white-space:pre-wrap!important}
+.output-row-v5>b{color:#D99072}
+.output-row-v5>pre{color:#7EA989!important}
+
+/* Theme-aware code blocks */
+.code-box-v5{margin:5px 0;border:1px solid var(--line);border-radius:7px;overflow:hidden}
+.code-box-v5 summary{list-style:none;padding:6px 9px;background:var(--card2);color:#79B5D5;font-size:10px;font-weight:750;cursor:pointer}
+.code-box-v5 summary::-webkit-details-marker{display:none}
+.code-box-v5 pre{
+  margin:0!important;
+  padding:10px 11px!important;
+  max-height:520px!important;
+  overflow:auto!important;
+  border:0!important;
+  background:#0B1117!important;
+  color:#DDE6ED!important;
+  font:10.25px/1.55 Menlo,Consolas,"SFMono-Regular",monospace!important;
+  white-space:pre!important;
+}
+
+/* Light mode code is LIGHT, not black */
+.light .code-box-v5 pre{
+  background:#F7F9FB!important;
+  color:#25313C!important;
+}
+.light .code-box-v5 summary{
+  background:#EDF4F8!important;
+  color:#286F9B!important;
+}
+.light .io-row-v5>pre{
+  background:#FFFFFF!important;
+  color:#344054!important;
+}
+.light .output-row-v5>pre{color:#466B4D!important}
+.light .concept-card-v5 strong,.light .final-section-v5 h4{color:#286F9B}
+
+/* Tab 2 code also follows theme */
+.quick-code-v4 pre{
+  background:#0B1117!important;
+  color:#DDE6ED!important;
+}
+.light .quick-code-v4 pre{
+  background:#F7F9FB!important;
+  color:#25313C!important;
+}
+.light .quick-io-v4 pre{
+  background:#FFFFFF!important;
+  color:#344054!important;
+}
+
+/* Raw code: no JS HTML injection, so comments remain clean text */
+.code-box-v5 code,.quick-code-v4 code{
+  font-family:inherit;
+  color:inherit;
+}
+
+@media(max-width:820px){.concept-grid-v5{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.concept-grid-v5{grid-template-columns:1fr}}
+</style><style id="v6-voice-styles">
+.tts-btn-v6{
+  transition:background .15s ease,border-color .15s ease,box-shadow .15s ease,transform .1s ease;
+}
+.tts-btn-v6:hover{
+  transform:translateY(-1px);
+}
+.tts-btn-v6.speaking{
+  background:#2F7FA9!important;
+  border-color:#69B7DF!important;
+  color:#FFFFFF!important;
+  box-shadow:0 0 0 3px rgba(79,164,208,.16)!important;
+}
+.light .tts-btn-v6.speaking{
+  background:#2F7FA9!important;
+  border-color:#2F7FA9!important;
+  color:#FFFFFF!important;
+}
+#voice{
+  min-width:205px;
+  max-width:300px;
+}
+.voice-status-v6{
+  color:var(--muted);
+  font-size:9.5px;
+}
+</style><style id="v7-ui-fix-styles">
+.panel{display:none!important}
+.panel.active{display:block!important}
+
+.tab{
+  cursor:pointer!important;
+  user-select:none;
+}
+.tab.active{
+  pointer-events:auto!important;
+}
+
+#theme{
+  cursor:pointer!important;
+  pointer-events:auto!important;
+  position:relative;
+  z-index:5;
+}
+</style><style id="v8-audio-highlight-styles">
+/* Listen rows */
+.speak-row-v8{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:8px;
+}
+.speak-row-v8 > :first-child{
+  flex:1;
+  min-width:0;
+}
+.inline-listen-v8{
+  width:25px!important;
+  min-width:25px!important;
+  height:25px!important;
+  flex:0 0 25px!important;
+  padding:0!important;
+  margin:0!important;
+  border-radius:50%!important;
+  font-size:10px!important;
+}
+
+/* plans.txt source */
+.source-file-v8{
+  margin:12px 0 4px;
+  padding:11px 12px 12px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:var(--card);
+}
+.source-head-v8{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:6px;
+}
+.source-head-v8 h3{
+  margin:1px 0 0;
+  font-size:13.5px;
+  color:var(--text);
+}
+.source-kicker-v8{
+  display:block;
+  color:#6EAED0;
+  font-size:8.5px;
+  font-weight:800;
+  letter-spacing:.9px;
+}
+.source-listen-v8{
+  width:auto!important;
+  min-width:72px!important;
+  height:28px!important;
+  padding:0 9px!important;
+  font-size:9.8px!important;
+}
+.source-file-v8 p{
+  margin:4px 0 8px;
+  color:var(--muted);
+  font-size:10.5px;
+  line-height:1.45;
+}
+.source-pre-v8{
+  margin:0!important;
+  padding:10px 11px!important;
+  border:1px solid #30414E!important;
+  border-radius:7px!important;
+  background:#111820!important;
+  color:#DDE6ED!important;
+  font:10.2px/1.55 Menlo,Consolas,"SFMono-Regular",monospace!important;
+  white-space:pre-wrap!important;
+}
+
+/* Unified syntax tokens */
+.tok-comment{color:#6A9955!important}
+.tok-keyword{color:#C586C0!important}
+.tok-string{color:#CE9178!important}
+.tok-number{color:#B5CEA8!important}
+.tok-func{color:#DCDCAA!important}
+.tok-builtin{color:#4FC1FF!important}
+.tok-decorator{color:#D7BA7D!important}
+
+/* Night code blocks */
+.code-pre-unified-v8,
+.quick-code-v4 pre,
+.code-box-v5 pre,
+.simple-code-v4 pre,
+.code-pre-v2{
+  background:#0B1117!important;
+  color:#DDE6ED!important;
+}
+
+/* Light code blocks: genuinely light */
+.light .code-pre-unified-v8,
+.light .quick-code-v4 pre,
+.light .code-box-v5 pre,
+.light .simple-code-v4 pre,
+.light .code-pre-v2{
+  background:#F7F9FB!important;
+  color:#25313C!important;
+  border-color:#D6E1E8!important;
+}
+.light .source-pre-v8{
+  background:#F7F9FB!important;
+  color:#344054!important;
+  border-color:#D6E1E8!important;
+}
+
+/* Light-theme token colors adjusted for white code background */
+.light .tok-comment{color:#467A39!important}
+.light .tok-keyword{color:#8A3FA0!important}
+.light .tok-string{color:#A34F2A!important}
+.light .tok-number{color:#4D6E32!important}
+.light .tok-func{color:#7A6500!important}
+.light .tok-builtin{color:#006C9C!important}
+.light .tok-decorator{color:#8B621E!important}
+
+@media(max-width:560px){
+  .source-head-v8{align-items:flex-start}
+}
+</style><style id="v9-faiss-visual-styles">
+.faiss-visual-v9{
+  margin:10px 0 13px;
+  padding:11px 12px 12px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:var(--card);
+}
+.faiss-head-v9{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:9px;
+}
+.faiss-head-v9 h3{
+  margin:1px 0 0;
+  font-size:13.5px;
+  color:var(--text);
+}
+.faiss-kicker-v9{
+  display:block;
+  color:#6EAED0;
+  font-size:8.3px;
+  letter-spacing:.9px;
+  font-weight:800;
+}
+.faiss-listen-v9{
+  width:auto!important;
+  min-width:74px!important;
+  height:28px!important;
+  padding:0 9px!important;
+  font-size:9.6px!important;
+}
+.faiss-flow-v9{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 18px minmax(0,1fr) 18px minmax(0,1fr) 18px minmax(0,1fr) 18px minmax(0,1fr);
+  gap:4px;
+  align-items:stretch;
+}
+.faiss-node-v9{
+  min-height:112px;
+  padding:9px 7px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:var(--card2);
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+.faiss-icon-v9{font-size:19px;margin-bottom:3px}
+.faiss-node-v9 strong{
+  color:#8FC4DF;
+  font-size:10.8px;
+}
+.faiss-node-v9 span{
+  display:block;
+  margin-top:3px;
+  color:var(--text);
+  font-size:9.5px;
+  line-height:1.35;
+}
+.faiss-node-v9 small{
+  display:block;
+  margin-top:4px;
+  color:var(--muted);
+  font-size:8.7px;
+  line-height:1.3;
+}
+.faiss-arrow-v9{
+  display:grid;
+  place-items:center;
+  color:#718796;
+  font-size:15px;
+}
+.faiss-definition-v9{
+  margin-top:9px;
+  padding:9px 10px;
+  border-left:3px solid #4B94C4;
+  border-radius:7px;
+  background:#17242E;
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  align-items:flex-start;
+}
+.faiss-definition-copy-v9 b{
+  display:block;
+  color:#9AC9E1;
+  font-size:10px;
+  margin-bottom:2px;
+}
+.faiss-definition-copy-v9 p{
+  margin:0;
+  color:#C2D0D9;
+  font-size:10.3px;
+  line-height:1.47;
+}
+.faiss-memory-v9{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:6px;
+  margin-top:8px;
+}
+.faiss-memory-v9>div{
+  padding:7px 8px;
+  border:1px solid var(--line);
+  border-radius:7px;
+  background:#151F27;
+}
+.faiss-memory-v9 b{
+  display:block;
+  color:#84BCD9;
+  font-size:9.8px;
+}
+.faiss-memory-v9 span{
+  display:block;
+  margin-top:2px;
+  color:#AEBCC6;
+  font-size:8.9px;
+  line-height:1.35;
+}
+
+/* Light theme */
+.light .faiss-definition-v9{
+  background:#F2F8FB;
+}
+.light .faiss-definition-copy-v9 b{
+  color:#286F9B;
+}
+.light .faiss-definition-copy-v9 p{
+  color:#475467;
+}
+.light .faiss-memory-v9>div{
+  background:#F8FAFC;
+}
+.light .faiss-memory-v9 b{
+  color:#286F9B;
+}
+.light .faiss-memory-v9 span{
+  color:#667085;
+}
+.light .faiss-node-v9 strong{
+  color:#286F9B;
+}
+
+@media(max-width:880px){
+  .faiss-flow-v9{
+    grid-template-columns:1fr;
+  }
+  .faiss-arrow-v9{
+    transform:rotate(90deg);
+    min-height:16px;
+  }
+  .faiss-node-v9{
+    min-height:auto;
+  }
+  .faiss-memory-v9{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+@media(max-width:520px){
+  .faiss-memory-v9{
+    grid-template-columns:1fr;
+  }
+}
+</style><style id="v10-faiss-layout-polish">
+/* FAISS visual is now a standalone summary after all concept cards */
+.faiss-visual-v9{
+  margin:16px 0 14px!important;
+  clear:both;
+}
+.faiss-head-v9{
+  margin-bottom:10px!important;
+}
+.faiss-visual-v9::before{
+  content:"";
+  display:block;
+  height:1px;
+  margin:-3px 0 12px;
+  background:linear-gradient(90deg,transparent,var(--line),transparent);
+}
+
+/* Prevent concept cards from stretching because of unrelated content */
+.concept-grid-v5{
+  align-items:stretch;
+}
+.concept-card-v5{
+  min-height:0!important;
+}
+
+/* On wide screens, keep the FAISS summary visually centered and independent */
+@media(min-width:1100px){
+  .faiss-visual-v9{
+    padding:13px 14px 14px!important;
+  }
+}
+</style></head><body><div class="wrap">
+<header><h1>LangChain Final Demo — Customer Support Copilot</h1><p>One compact project covering modules 1–6.</p><div class="toolbar"><label>Voice <select aria-label="English voice" id="voice"><option value="">Loading voices...</option></select></label><span class="voice-status-v6" id="voiceStatusV6">Voice: loading...</span><label>Speed <input id="rate" max="1.3" min=".7" step=".05" type="range" value=".95"/></label><button class="stop" id="stop">Stop</button><button class="theme" id="theme">☀ Light Mode</button></div></header>
+<div class="top-explain-v4">
+<div class="top-explain-head-v4">
+<div>
+<span class="eyebrow-v4">PROJECT STORY</span>
+<h2>60-Second Explanation</h2>
+</div>
+<button class="listen top-listen-v4 tts-btn-v6" data-text="I built a small LangChain customer-support copilot that combines structured output, a deterministic preprocessing chain, RAG, conversational memory, evaluation, and a tool-calling agent. Local policy files are split into chunks, converted into embeddings, and indexed with FAISS. I expose retrieval as a policy-search tool and also provide a calculation tool. The agent decides which tools to call, while MemorySaver keeps conversation state for follow-up questions." title="Listen">🔊 Listen</button>
+</div>
+<p>I built a small LangChain customer-support copilot that combines structured output, a deterministic preprocessing chain, RAG, conversational memory, evaluation, and a tool-calling agent. Local policy files are split into chunks, converted into embeddings, and indexed with FAISS. I expose retrieval as a policy-search tool and also provide a calculation tool. The agent decides which tools to call, while MemorySaver keeps conversation state for follow-up questions.</p>
+</div>
+<nav class="tabs"><button class="tab active" data-tab="p1">01 Overview</button><button class="tab" data-tab="p2">02 Modules 1–6</button><button class="tab" data-tab="p3">03 Final Demo</button><button class="tab" data-tab="p4">04 Complete Code</button></nav>
+<section class="panel active" id="p1"><div class="card"><h3>What this project is</h3><div class="speak-row-v8"><p>A small LangChain customer-support copilot combining <b>structured output, memory, chains, RAG, evaluation, and a tool-calling agent</b>.</p><button class="listen tts-btn-v6 inline-listen-v8" data-text="A small LangChain customer-support copilot combining structured output, memory, chains, RAG, evaluation, and a tool-calling agent ." title="Listen" type="button">🔊</button></div><div class="flow"><span>User</span><b>→</b><span>Structured Output</span><b>→</b><span>Chain</span><b>→</b><span>Agent + Memory</span><b>→</b><span>RAG / Calculation</span><b>→</b><span>Answer</span></div></div><div class="card"><h3>RAG path</h3><div class="flow"><span>policy_search</span><b>→</b><span>Local Files</span><b>→</b><span>Chunks</span><b>→</b><span>Embeddings</span><b>→</b><span>FAISS</span><b>→</b><span>Relevant Context</span></div></div></section>
+<section class="panel" id="p2"><details class="major" open=""><summary><span class="num">01</span><span><b>Structured Output</b><small>Free text → predictable schema</small></span><span>›</span></summary><div class="body">
+<div class="speak-row-v8"><div class="quick-idea-v4">Turn free text into a predictable schema.</div><button class="listen tts-btn-v6 inline-listen-v8" data-text="Turn free text into a predictable schema." title="Listen" type="button">🔊</button></div>
+<div class="quick-io-v4">
+<div class="quick-label-v4">Input</div>
+<pre>What does the Business plan include and what is the cost for 12 months?</pre>
+</div>
+<details class="quick-code-v4" open="">
+<summary>Code</summary>
+<pre class="code-pre-unified-v8"><code class="python-code-v4"><span class="tok-keyword">class</span> <span class="tok-func">RequestInfo</span>(BaseModel):
+    topic: <span class="tok-builtin">str</span>
+    needs_calculation: <span class="tok-builtin">bool</span>
+
+structured_model = model.<span class="tok-func">with_structured_output</span>(RequestInfo)
+
+result = structured_model.<span class="tok-func">invoke</span>(
+    <span class="tok-string">"Business plan + 12-month cost?"</span>
+)</code></pre>
+</details>
+<div class="quick-io-v4 output-v4">
+<div class="quick-label-v4">Output</div>
+<pre>topic='plan'
+needs_calculation=True</pre>
+</div>
+</div></details><details class="major" open=""><summary><span class="num">02</span><span><b>Memory</b><small>Same thread_id → conversation state</small></span><span>›</span></summary><div class="body">
+<div class="speak-row-v8"><div class="quick-idea-v4">Keep conversation state by using the same thread_id.</div><button class="listen tts-btn-v6 inline-listen-v8" data-text="Keep conversation state by using the same thread_id." title="Listen" type="button">🔊</button></div>
+<div class="quick-io-v4">
+<div class="quick-label-v4">Input</div>
+<pre>Turn 1: Business plan for 12 months
+Turn 2: What about 24 months?</pre>
+</div>
+<details class="quick-code-v4" open="">
+<summary>Code</summary>
+<pre class="code-pre-unified-v8"><code class="python-code-v4">memory = <span class="tok-func">MemorySaver</span>()
+
+config = {
+    <span class="tok-string">"configurable"</span>: {
+        <span class="tok-string">"thread_id"</span>: <span class="tok-string">"customer-001"</span>
+    }
+}</code></pre>
+</details>
+<div class="quick-io-v4 output-v4">
+<div class="quick-label-v4">Output</div>
+<pre>The second question can reuse the first conversation.</pre>
+</div>
+</div></details><details class="major" open=""><summary><span class="num">03</span><span><b>Chains</b><small>Fixed workflow: prompt → model → parser</small></span><span>›</span></summary><div class="body">
+<div class="speak-row-v8"><div class="quick-idea-v4">A chain is a fixed workflow: prompt → model → parser.</div><button class="listen tts-btn-v6 inline-listen-v8" data-text="A chain is a fixed workflow: prompt → model → parser." title="Listen" type="button">🔊</button></div>
+<div class="quick-io-v4">
+<div class="quick-label-v4">Input</div>
+<pre>I want Business. What comes with it for twelve months?</pre>
+</div>
+<details class="quick-code-v4" open="">
+<summary>Code</summary>
+<pre class="code-pre-unified-v8"><code class="python-code-v4">chain = (
+    prompt
+    | model
+    | <span class="tok-func">StrOutputParser</span>()
+)
+
+clean_question = chain.<span class="tok-func">invoke</span>({
+    <span class="tok-string">"question"</span>: user_question
+})</code></pre>
+</details>
+<div class="quick-io-v4 output-v4">
+<div class="quick-label-v4">Output</div>
+<pre>What features are included in the Business plan, and what is the cost for 12 months?</pre>
+</div>
+</div></details><details class="major" open=""><summary><span class="num">04</span><span><b>RAG, Embeddings &amp; FAISS</b><small>Local documents → chunks → vectors → semantic retrieval</small></span><span>›</span></summary><div class="body">
+<div class="speak-row-v8"><div class="quick-idea-v4">Retrieve relevant policy text before the LLM answers.</div><button class="listen tts-btn-v6 inline-listen-v8" data-text="Retrieve relevant policy text before the LLM answers." title="Listen" type="button">🔊</button></div>
+<div class="quick-io-v4">
+<div class="quick-label-v4">Input</div>
+<pre>Which plan includes audit logs?</pre>
+</div>
+<details class="quick-code-v4" open="">
+<summary>Code</summary>
+<pre class="code-pre-unified-v8"><code class="python-code-v4"><span class="tok-comment"># 1. Split files into small chunks</span>
+chunks = splitter.<span class="tok-func">split_documents</span>(docs)
+
+<span class="tok-comment"># 2. Text → embedding vectors</span>
+embeddings = <span class="tok-func">OpenAIEmbeddings</span>(
+    model=<span class="tok-string">"text-embedding-3-small"</span>
+)
+
+<span class="tok-comment"># 3. Store vectors in FAISS</span>
+store = FAISS.<span class="tok-func">from_documents</span>(
+    chunks,
+    embeddings
+)
+
+<span class="tok-comment"># 4. Search by meaning</span>
+docs = store.<span class="tok-func">similarity_search</span>(
+    <span class="tok-string">"Which plan includes audit logs?"</span>,
+    k=<span class="tok-number">3</span>
+)</code></pre>
+</details>
+<div class="quick-io-v4 output-v4">
+<div class="quick-label-v4">Output</div>
+<pre>Business plan → audit logs, API access</pre>
+</div>
+</div></details><details class="major" open=""><summary><span class="num">05</span><span><b>Evaluation</b><small>Repeatable checks instead of one manual example</small></span><span>›</span></summary><div class="body">
+<div class="speak-row-v8"><div class="quick-idea-v4">Use fixed questions to check that retrieval still finds the right fact.</div><button class="listen tts-btn-v6 inline-listen-v8" data-text="Use fixed questions to check that retrieval still finds the right fact." title="Listen" type="button">🔊</button></div>
+<div class="quick-io-v4">
+<div class="quick-label-v4">Input</div>
+<pre>Question: Which plan includes audit logs?
+Expected: Business</pre>
+</div>
+<details class="quick-code-v4" open="">
+<summary>Code</summary>
+<pre class="code-pre-unified-v8"><code class="python-code-v4">docs = store.<span class="tok-func">similarity_search</span>(
+    question,
+    k=<span class="tok-number">3</span>
+)
+
+context = <span class="tok-string">"\n"</span>.<span class="tok-func">join</span>(
+    d.page_content <span class="tok-keyword">for</span> d <span class="tok-keyword">in</span> docs
+)
+
+passed = <span class="tok-string">"business"</span> <span class="tok-keyword">in</span> context.<span class="tok-func">lower</span>()</code></pre>
+</details>
+<div class="quick-io-v4 output-v4">
+<div class="quick-label-v4">Output</div>
+<pre>PASS</pre>
+</div>
+</div></details><details class="major" open=""><summary><span class="num">06</span><span><b>Agents &amp; Tools</b><small>Dynamic choice between policy retrieval and calculation</small></span><span>›</span></summary><div class="body">
+<div class="speak-row-v8"><div class="quick-idea-v4">The agent chooses between policy search and calculation.</div><button class="listen tts-btn-v6 inline-listen-v8" data-text="The agent chooses between policy search and calculation." title="Listen" type="button">🔊</button></div>
+<div class="quick-io-v4">
+<div class="quick-label-v4">Input</div>
+<pre>Business plan features + cost for 12 months</pre>
+</div>
+<details class="quick-code-v4" open="">
+<summary>Code</summary>
+<pre class="code-pre-unified-v8"><code class="python-code-v4"><span class="tok-decorator">@tool</span>
+<span class="tok-keyword">def</span> <span class="tok-func">policy_search</span>(query: <span class="tok-builtin">str</span>) -&gt; <span class="tok-builtin">str</span>:
+    <span class="tok-comment"># RAG search</span>
+<span class="tok-keyword">return</span> <span class="tok-func">search_policy</span>(query)
+
+<span class="tok-decorator">@tool</span>
+<span class="tok-keyword">def</span> <span class="tok-func">total_cost</span>(price: <span class="tok-builtin">float</span>, months: <span class="tok-builtin">int</span>) -&gt; <span class="tok-builtin">float</span>:
+    <span class="tok-comment"># Exact calculation</span>
+<span class="tok-keyword">return</span> price * months
+
+agent = <span class="tok-func">create_agent</span>(
+    model=model,
+    tools=[policy_search, total_cost]
+)</code></pre>
+</details>
+<div class="quick-io-v4 output-v4">
+<div class="quick-label-v4">Output</div>
+<pre>Agent calls policy_search → gets $99 → calls total_cost → gets $1,188</pre>
+</div>
+</div></details></section>
+<section class="panel" id="p3">
+<div class="concept-intro-v5">
+<h3>Core Concepts Before the Final Demo</h3>
+<div class="speak-row-v8"><p>Understand these words first. Then the code in Tab 4 becomes much easier.</p><button class="listen tts-btn-v6 inline-listen-v8" data-text="Understand these words first. Then the code in Tab 4 becomes much easier." title="Listen" type="button">🔊</button></div>
+</div>
+<div class="concept-grid-v5">
+<div class="concept-card-v5">
+<strong>Normalize</strong>
+<div class="speak-row-v8"><span>Make the question cleaner.</span><button class="listen tts-btn-v6 inline-listen-v8" data-text="Make the question cleaner." title="Listen" type="button">🔊</button></div>
+<div class="speak-row-v8"><p>Example: turn an informal request into one clear sentence before later processing.</p><button class="listen tts-btn-v6 inline-listen-v8" data-text="Example: turn an informal request into one clear sentence before later processing." title="Listen" type="button">🔊</button></div>
+</div>
+<div class="concept-card-v5">
+<strong>Document</strong>
+<div class="speak-row-v8"><span>A loaded source file.</span><button class="listen tts-btn-v6 inline-listen-v8" data-text="A loaded source file." title="Listen" type="button">🔊</button></div>
+<div class="speak-row-v8"><p>Example: plans.txt becomes a LangChain Document with page_content and metadata.</p><button class="listen tts-btn-v6 inline-listen-v8" data-text="Example: plans.txt becomes a LangChain Document with page_content and metadata." title="Listen" type="button">🔊</button></div>
+</div>
+<div class="concept-card-v5">
+<strong>Chunk</strong>
+<div class="speak-row-v8"><span>A small piece of a document.</span><button class="listen tts-btn-v6 inline-listen-v8" data-text="A small piece of a document." title="Listen" type="button">🔊</button></div>
+<div class="speak-row-v8"><p>Long files are split into smaller pieces so retrieval can find a precise section instead of returning the whole file.</p><button class="listen tts-btn-v6 inline-listen-v8" data-text="Long files are split into smaller pieces so retrieval can find a precise section instead of returning the whole file." title="Listen" type="button">🔊</button></div>
+</div>
+<div class="concept-card-v5">
+<strong>Embedding</strong>
+<div class="speak-row-v8"><span>Text → numbers that represent meaning.</span><button class="listen tts-btn-v6 inline-listen-v8" data-text="Text → numbers that represent meaning." title="Listen" type="button">🔊</button></div>
+<div class="speak-row-v8"><p>Similar sentences produce vectors that are close to each other in vector space.</p><button class="listen tts-btn-v6 inline-listen-v8" data-text="Similar sentences produce vectors that are close to each other in vector space." title="Listen" type="button">🔊</button></div>
+</div>
+<div class="concept-card-v5">
+<strong>FAISS</strong>
+<div class="speak-row-v8"><span>Vector similarity search.</span><button class="listen tts-btn-v6 inline-listen-v8" data-text="Vector similarity search." title="Listen" type="button">🔊</button></div>
+<div class="speak-row-v8"><p>FAISS stores embedding vectors and quickly finds the vectors most similar to the user's question.</p><button class="listen tts-btn-v6 inline-listen-v8" data-text="FAISS stores embedding vectors and quickly finds the vectors most similar to the user's question." title="Listen" type="button">🔊</button></div>
+</div>
+
+<div class="concept-card-v5">
+<strong>Retriever</strong>
+<div class="speak-row-v8"><span>The search step.</span><button class="listen tts-btn-v6 inline-listen-v8" data-text="The search step." title="Listen" type="button">🔊</button></div>
+<div class="speak-row-v8"><p>It takes a user question and returns the most relevant chunks from the vector index.</p><button class="listen tts-btn-v6 inline-listen-v8" data-text="It takes a user question and returns the most relevant chunks from the vector index." title="Listen" type="button">🔊</button></div>
+</div>
+<div class="concept-card-v5">
+<strong>RAG</strong>
+<div class="speak-row-v8"><span>Retrieve first, answer second.</span><button class="listen tts-btn-v6 inline-listen-v8" data-text="Retrieve first, answer second." title="Listen" type="button">🔊</button></div>
+<div class="speak-row-v8"><p>The LLM answers using external context retrieved from your policy files.</p><button class="listen tts-btn-v6 inline-listen-v8" data-text="The LLM answers using external context retrieved from your policy files." title="Listen" type="button">🔊</button></div>
+</div>
+<div class="concept-card-v5">
+<strong>Chain</strong>
+<div class="speak-row-v8"><span>A fixed workflow.</span><button class="listen tts-btn-v6 inline-listen-v8" data-text="A fixed workflow." title="Listen" type="button">🔊</button></div>
+<div class="speak-row-v8"><p>The developer decides the order, such as Prompt → Model → Parser.</p><button class="listen tts-btn-v6 inline-listen-v8" data-text="The developer decides the order, such as Prompt → Model → Parser." title="Listen" type="button">🔊</button></div>
+</div>
+<div class="concept-card-v5">
+<strong>@tool</strong>
+<div class="speak-row-v8"><span>Expose a Python function to the agent.</span><button class="listen tts-btn-v6 inline-listen-v8" data-text="Expose a Python function to the agent." title="Listen" type="button">🔊</button></div>
+<div class="speak-row-v8"><p>The decorator adds tool metadata so the model can request this function by name with structured arguments.</p><button class="listen tts-btn-v6 inline-listen-v8" data-text="The decorator adds tool metadata so the model can request this function by name with structured arguments." title="Listen" type="button">🔊</button></div>
+</div>
+<div class="concept-card-v5">
+<strong>Agent</strong>
+<div class="speak-row-v8"><span>Dynamic decision maker.</span><button class="listen tts-btn-v6 inline-listen-v8" data-text="Dynamic decision maker." title="Listen" type="button">🔊</button></div>
+<div class="speak-row-v8"><p>The model decides whether to call policy_search, total_cost, both, or neither.</p><button class="listen tts-btn-v6 inline-listen-v8" data-text="The model decides whether to call policy_search, total_cost, both, or neither." title="Listen" type="button">🔊</button></div>
+</div>
+<div class="concept-card-v5">
+<strong>Memory</strong>
+<div class="speak-row-v8"><span>Conversation state.</span><button class="listen tts-btn-v6 inline-listen-v8" data-text="Conversation state." title="Listen" type="button">🔊</button></div>
+<div class="speak-row-v8"><p>Using the same thread_id lets a follow-up like 'What about 24 months?' reuse earlier context.</p><button class="listen tts-btn-v6 inline-listen-v8" data-text="Using the same thread_id lets a follow-up like 'What about 24 months?' reuse earlier context." title="Listen" type="button">🔊</button></div>
+</div>
+</div><div class="card"><h3>Final End-to-End Run</h3><details class="code-cell-v2"><summary class="code-summary-v2"><span class="code-icon-v2">⌘</span><span class="code-summary-copy-v2"><b>Final Run</b><small>Notebook cell · click to expand</small></span><span class="code-chevron-v2">›</span></summary><div class="code-body-v2"><div class="nb-row-v2"><div class="nb-prompt-v2">In [ ]:</div><pre class="code-pre-v2 code-pre-unified-v8"><code class="python-code-v2">question = <span class="tok-string">"What does the Business plan include and what is the cost for 12 months?"</span>
+
+info = structured_model.<span class="tok-func">invoke</span>(question)
+normalized = normalization_chain.<span class="tok-func">invoke</span>({<span class="tok-string">"question"</span>: question})
+
+result = agent.<span class="tok-func">invoke</span>(
+    {<span class="tok-string">"messages"</span>: [{<span class="tok-string">"role"</span>: <span class="tok-string">"user"</span>, <span class="tok-string">"content"</span>: normalized}]},
+    config=config
+)
+
+<span class="tok-builtin">print</span>(result[<span class="tok-string">"messages"</span>][-<span class="tok-number">1</span>].content)</code></pre></div></div></details><details class="code-cell-v2"><summary class="code-summary-v2"><span class="code-icon-v2">⌘</span><span class="code-summary-copy-v2"><b>Memory Follow-up</b><small>Notebook cell · click to expand</small></span><span class="code-chevron-v2">›</span></summary><div class="code-body-v2"><div class="nb-row-v2"><div class="nb-prompt-v2">In [ ]:</div><pre class="code-pre-v2 code-pre-unified-v8"><code class="python-code-v2">follow_up = agent.<span class="tok-func">invoke</span>(
+    {<span class="tok-string">"messages"</span>: [{<span class="tok-string">"role"</span>: <span class="tok-string">"user"</span>, <span class="tok-string">"content"</span>: <span class="tok-string">"What about 24 months?"</span>}]},
+    config=config
+)
+
+<span class="tok-builtin">print</span>(follow_up[<span class="tok-string">"messages"</span>][-<span class="tok-number">1</span>].content)</code></pre></div></div></details></div><div class="card"><h3>1–6 Coverage</h3><table><tr><th>Module</th><th>Implementation</th><th>Meaning</th></tr><tr><td>1. Structured Output</td><td>RequestInfo</td><td>Predictable schema</td></tr><tr><td>2. Memory</td><td>MemorySaver + thread_id</td><td>Conversation state</td></tr><tr><td>3. Chains</td><td>prompt | model | parser</td><td>Fixed workflow</td></tr><tr><td>4. RAG</td><td>Embeddings + FAISS</td><td>External knowledge</td></tr><tr><td>5. Evaluation</td><td>Fixed test cases</td><td>Repeatable quality check</td></tr><tr><td>6. Agents &amp; Tools</td><td>policy_search + total_cost</td><td>Dynamic tool selection</td></tr></table></div>
+<section class="faiss-visual-v9">
+<div class="faiss-head-v9">
+<div>
+<span class="faiss-kicker-v9">MENTAL MODEL</span>
+<h3>From Document to FAISS Search</h3>
+</div>
+<button class="listen tts-btn-v6 faiss-listen-v9" data-text="FAISS is a vector similarity search library. In my RAG demo, I use it to index document embeddings and retrieve the most relevant policy chunks for a user question." title="Listen" type="button">🔊 Listen</button>
+</div>
+<div class="faiss-flow-v9">
+<div class="faiss-node-v9">
+<div class="faiss-icon-v9">📘</div>
+<strong>Document</strong>
+<span>A whole source file</span>
+<small>Think: a book</small>
+</div>
+<div class="faiss-arrow-v9">→</div>
+<div class="faiss-node-v9">
+<div class="faiss-icon-v9">🧩</div>
+<strong>Chunk</strong>
+<span>A small piece of the document</span>
+<small>Think: one paragraph</small>
+</div>
+<div class="faiss-arrow-v9">→</div>
+<div class="faiss-node-v9">
+<div class="faiss-icon-v9">📍</div>
+<strong>Embedding</strong>
+<span>A semantic vector for each chunk</span>
+<small>Think: a meaning coordinate</small>
+</div>
+<div class="faiss-arrow-v9">→</div>
+<div class="faiss-node-v9">
+<div class="faiss-icon-v9">🔎</div>
+<strong>FAISS</strong>
+<span>Searches nearby vectors</span>
+<small>Think: find the closest meanings</small>
+</div>
+<div class="faiss-arrow-v9">→</div>
+<div class="faiss-node-v9">
+<div class="faiss-icon-v9">✅</div>
+<strong>Relevant Chunks</strong>
+<span>The best context for the question</span>
+<small>Sent to the LLM</small>
+</div>
+</div>
+<div class="faiss-definition-v9">
+<div class="faiss-definition-copy-v9">
+<b>Professional explanation</b>
+<p>FAISS is a vector similarity search library. In my RAG demo, I use it to index document embeddings and retrieve the most relevant policy chunks for a user question.</p>
+</div>
+<button class="listen tts-btn-v6 inline-listen-v8" data-text="FAISS is a vector similarity search library. In my RAG demo, I use it to index document embeddings and retrieve the most relevant policy chunks for a user question." title="Listen" type="button">🔊</button>
+</div>
+<div class="faiss-memory-v9">
+<div><b>Document</b><span>A whole source file</span></div>
+<div><b>Chunk</b><span>A small section from the document</span></div>
+<div><b>Embedding</b><span>A semantic coordinate for each chunk</span></div>
+<div><b>FAISS</b><span>Finds the chunks whose coordinates are closest to the question</span></div>
+</div>
+</section><section class="source-file-v8">
+<div class="source-head-v8">
+<div>
+<span class="source-kicker-v8">LOCAL RAG SOURCE</span>
+<h3>plans.txt</h3>
+</div>
+<button class="listen tts-btn-v6 source-listen-v8" data-text="Starter Plan
+The Starter plan costs $29 per month.
+It supports up to five users.
+
+Business Plan
+The Business plan costs $99 per month.
+It includes audit logs and API access." title="Listen to plans.txt">🔊 Listen</button>
+</div>
+<div class="speak-row-v8"><p class="speak-line-v8">
+        This is one of the local files indexed by FAISS. The RAG tool retrieves relevant parts of this file when the user asks about subscription plans.
+      </p><button class="listen tts-btn-v6 inline-listen-v8" data-text="This is one of the local files indexed by FAISS. The RAG tool retrieves relevant parts of this file when the user asks about subscription plans." title="Listen" type="button">🔊</button></div>
+<pre class="source-pre-v8"><code>Starter Plan
+The Starter plan costs $29 per month.
+It supports up to five users.
+
+Business Plan
+The Business plan costs $99 per month.
+It includes audit logs and API access.</code></pre>
+</section>
+</section><section class="panel" id="p4">
+<div class="final-intro-v5">
+<h3>Final Complete Demo — Read Top to Bottom</h3>
+<div class="speak-row-v8"><p>This version is intentionally small. Each section defines something and immediately shows how it is called.</p><button class="listen tts-btn-v6 inline-listen-v8" data-text="This version is intentionally small. Each section defines something and immediately shows how it is called." title="Listen" type="button">🔊</button></div>
+<div class="final-flow-v5">
+<span>1. Build RAG</span><b>→</b><span>2. Create Tools</span><b>→</b>
+<span>3. Create Agent + Memory</span><b>→</b><span>4. main()</span><b>→</b><span>5. Follow-up</span>
+</div>
+</div>
+<section class="final-section-v5"><h4>1. Build the RAG Search</h4><div class="speak-row-v8"><p class="final-intro-text-v5">First build a searchable knowledge base from the local policy files.</p><button class="listen tts-btn-v6 inline-listen-v8" data-text="First build a searchable knowledge base from the local policy files." title="Listen" type="button">🔊</button></div><div class="io-row-v5"><b>Input</b><pre>Which plan includes audit logs?</pre></div><details class="code-box-v5" open=""><summary>Code</summary><pre class="code-pre-unified-v8"><code><span class="tok-comment"># INPUT: files inside data/</span>
+<span class="tok-comment"># plans.txt, refund_policy.txt, cancellation_policy.txt</span>
+
+docs = []
+
+<span class="tok-keyword">for</span> p <span class="tok-keyword">in</span> <span class="tok-func">Path</span>(<span class="tok-string">"data"</span>).<span class="tok-func">glob</span>(<span class="tok-string">"*.txt"</span>):
+    loaded = <span class="tok-func">TextLoader</span>(<span class="tok-builtin">str</span>(p), encoding=<span class="tok-string">"utf-8"</span>).<span class="tok-func">load</span>()
+
+    <span class="tok-comment"># Keep source file name so the final answer can cite it.</span>
+<span class="tok-keyword">for</span> d <span class="tok-keyword">in</span> loaded:
+        d.metadata[<span class="tok-string">"file_name"</span>] = p.name
+
+    docs.<span class="tok-func">extend</span>(loaded)
+
+<span class="tok-comment"># Chunk = small piece of a document.</span>
+splitter = <span class="tok-func">RecursiveCharacterTextSplitter</span>(
+    chunk_size=<span class="tok-number">400</span>,
+    chunk_overlap=<span class="tok-number">60</span>
+)
+
+chunks = splitter.<span class="tok-func">split_documents</span>(docs)
+
+<span class="tok-comment"># Embedding = text converted into semantic vectors.</span>
+embeddings = <span class="tok-func">OpenAIEmbeddings</span>(
+    model=<span class="tok-string">"text-embedding-3-small"</span>
+)
+
+<span class="tok-comment"># FAISS stores those vectors for similarity search.</span>
+store = FAISS.<span class="tok-func">from_documents</span>(
+    chunks,
+    embeddings
+)
+
+<span class="tok-comment"># A real retrieval call:</span>
+question = <span class="tok-string">"Which plan includes audit logs?"</span>
+
+retrieved = store.<span class="tok-func">similarity_search</span>(
+    question,
+    k=<span class="tok-number">3</span>
+)
+
+<span class="tok-keyword">for</span> d <span class="tok-keyword">in</span> retrieved:
+    <span class="tok-builtin">print</span>(d.metadata[<span class="tok-string">"file_name"</span>])
+    <span class="tok-builtin">print</span>(d.page_content)</code></pre></details><div class="io-row-v5 output-row-v5"><b>Output</b><pre>plans.txt
+Business plan costs $99/month.
+It includes audit logs and API access.</pre></div></section><section class="final-section-v5"><h4>2. Turn Functions into Agent Tools</h4><div class="speak-row-v8"><p class="final-intro-text-v5">Now expose two Python functions to the Agent. `@tool` is important: without it, these are just normal Python functions.</p><button class="listen tts-btn-v6 inline-listen-v8" data-text="Now expose two Python functions to the Agent. `@tool` is important: without it, these are just normal Python functions." title="Listen" type="button">🔊</button></div><div class="io-row-v5"><b>Input</b><pre>policy_search: Business plan price and features
+total_cost: 99, 12</pre></div><details class="code-box-v5" open=""><summary>Code</summary><pre class="code-pre-unified-v8"><code><span class="tok-decorator">@tool</span>
+<span class="tok-keyword">def</span> <span class="tok-func">policy_search</span>(query: <span class="tok-builtin">str</span>) -&gt; <span class="tok-builtin">str</span>:
+    <span class="tok-string">"""Search plan and policy documents."""</span>
+<span class="tok-comment"># INPUT example:</span>
+<span class="tok-comment"># §§PROT1§§</span>
+
+    retrieved = store.<span class="tok-func">similarity_search</span>(
+        query,
+        k=<span class="tok-number">3</span>
+    )
+
+    <span class="tok-comment"># OUTPUT: relevant policy text + source file</span>
+<span class="tok-keyword">return</span> <span class="tok-string">"\n\n"</span>.<span class="tok-func">join</span>(
+        f<span class="tok-string">"SOURCE: {d.metadata['file_name']}\n"</span>
+        f<span class="tok-string">"{d.page_content}"</span>
+<span class="tok-keyword">for</span> d <span class="tok-keyword">in</span> retrieved
+    )
+
+
+<span class="tok-decorator">@tool</span>
+<span class="tok-keyword">def</span> <span class="tok-func">total_cost</span>(
+    monthly_price: <span class="tok-builtin">float</span>,
+    months: <span class="tok-builtin">int</span>
+) -&gt; <span class="tok-builtin">float</span>:
+    <span class="tok-string">"""Calculate total subscription cost."""</span>
+<span class="tok-comment"># INPUT example: 99, 12</span>
+<span class="tok-comment"># OUTPUT: 1188</span>
+<span class="tok-keyword">return</span> monthly_price * months
+
+
+<span class="tok-comment"># Direct test before creating the agent:</span>
+<span class="tok-builtin">print</span>(
+    policy_search.<span class="tok-func">invoke</span>({
+        <span class="tok-string">"query"</span>: <span class="tok-string">"Business plan price and features"</span>
+    })
+)
+
+<span class="tok-builtin">print</span>(
+    total_cost.<span class="tok-func">invoke</span>({
+        <span class="tok-string">"monthly_price"</span>: <span class="tok-number">99</span>,
+        <span class="tok-string">"months"</span>: <span class="tok-number">12</span>
+    })
+)</code></pre></details><div class="io-row-v5 output-row-v5"><b>Output</b><pre>plans.txt → $99/month, audit logs, API access
+1188</pre></div></section><section class="final-section-v5"><h4>3. Create the Agent and Memory</h4><div class="speak-row-v8"><p class="final-intro-text-v5">The Agent gets access to the tools. MemorySaver stores the conversation state for the same `thread_id`.</p><button class="listen tts-btn-v6 inline-listen-v8" data-text="The Agent gets access to the tools. MemorySaver stores the conversation state for the same `thread_id`." title="Listen" type="button">🔊</button></div><div class="io-row-v5"><b>Input</b><pre>2 tools + thread_id=customer-001</pre></div><details class="code-box-v5" open=""><summary>Code</summary><pre class="code-pre-unified-v8"><code>model = <span class="tok-func">init_chat_model</span>(
+    <span class="tok-string">"openai:gpt-4.1-mini"</span>,
+    temperature=<span class="tok-number">0</span>
+)
+
+<span class="tok-comment"># Memory = keep conversation state.</span>
+memory = <span class="tok-func">MemorySaver</span>()
+
+agent = <span class="tok-func">create_agent</span>(
+    model=model,
+
+    <span class="tok-comment"># The agent may choose either tool.</span>
+    tools=[
+        policy_search,
+        total_cost
+    ],
+
+    system_prompt=(
+        <span class="tok-string">"Use policy_search for plan and policy facts. "</span>
+<span class="tok-string">"Use total_cost for calculations. "</span>
+<span class="tok-string">"Do not invent policy facts."</span>
+    ),
+
+    checkpointer=memory
+)
+
+<span class="tok-comment"># Same thread_id = same conversation.</span>
+config = {
+    <span class="tok-string">"configurable"</span>: {
+        <span class="tok-string">"thread_id"</span>: <span class="tok-string">"customer-001"</span>
+    }
+}
+
+<span class="tok-builtin">print</span>(<span class="tok-string">"Agent ready"</span>)</code></pre></details><div class="io-row-v5 output-row-v5"><b>Output</b><pre>Agent ready</pre></div></section><section class="final-section-v5"><h4>4. main() — Run the Complete Question</h4><div class="speak-row-v8"><p class="final-intro-text-v5">This is the real entry point. Now you can clearly see the input, agent call, and final output.</p><button class="listen tts-btn-v6 inline-listen-v8" data-text="This is the real entry point. Now you can clearly see the input, agent call, and final output." title="Listen" type="button">🔊</button></div><div class="io-row-v5"><b>Input</b><pre>What does the Business plan include and what is the cost for 12 months?</pre></div><details class="code-box-v5" open=""><summary>Code</summary><pre class="code-pre-unified-v8"><code><span class="tok-keyword">def</span> <span class="tok-func">main</span>():
+    <span class="tok-comment"># INPUT from the user</span>
+    question = (
+        <span class="tok-string">"What does the Business plan include "</span>
+<span class="tok-string">"and what is the cost for 12 months?"</span>
+    )
+
+    <span class="tok-comment"># Agent decides:</span>
+<span class="tok-comment"># 1. Call policy_search for plan facts.</span>
+<span class="tok-comment"># 2. Read monthly price = 99.</span>
+<span class="tok-comment"># 3. Call total_cost(99, 12).</span>
+<span class="tok-comment"># 4. Generate the final answer.</span>
+    result = agent.<span class="tok-func">invoke</span>(
+        {
+            <span class="tok-string">"messages"</span>: [
+                {
+                    <span class="tok-string">"role"</span>: <span class="tok-string">"user"</span>,
+                    <span class="tok-string">"content"</span>: question
+                }
+            ]
+        },
+        config=config
+    )
+
+    answer = result[<span class="tok-string">"messages"</span>][-<span class="tok-number">1</span>].content
+
+    <span class="tok-comment"># OUTPUT to the user</span>
+<span class="tok-builtin">print</span>(answer)
+
+
+<span class="tok-keyword">if</span> __name__ == <span class="tok-string">"__main__"</span>:
+    <span class="tok-func">main</span>()</code></pre></details><div class="io-row-v5 output-row-v5"><b>Output</b><pre>The Business plan includes audit logs and API access.
+It costs $99/month.
+12 months = $1,188.
+Source: plans.txt</pre></div></section><section class="final-section-v5"><h4>5. Memory Follow-up</h4><div class="speak-row-v8"><p class="final-intro-text-v5">Use the same `config`, so the Agent remembers the earlier Business-plan conversation.</p><button class="listen tts-btn-v6 inline-listen-v8" data-text="Use the same `config`, so the Agent remembers the earlier Business-plan conversation." title="Listen" type="button">🔊</button></div><div class="io-row-v5"><b>Input</b><pre>What about 24 months?</pre></div><details class="code-box-v5" open=""><summary>Code</summary><pre class="code-pre-unified-v8"><code><span class="tok-comment"># INPUT:</span>
+<span class="tok-comment"># The user does NOT repeat §§PROT0§§.</span>
+follow_up = agent.<span class="tok-func">invoke</span>(
+    {
+        <span class="tok-string">"messages"</span>: [
+            {
+                <span class="tok-string">"role"</span>: <span class="tok-string">"user"</span>,
+                <span class="tok-string">"content"</span>: <span class="tok-string">"What about 24 months?"</span>
+            }
+        ]
+    },
+    config=config
+)
+
+<span class="tok-comment"># Because thread_id is the same,</span>
+<span class="tok-comment"># the agent can reuse previous context.</span>
+<span class="tok-builtin">print</span>(
+    follow_up[<span class="tok-string">"messages"</span>][-<span class="tok-number">1</span>].content
+)</code></pre></details><div class="io-row-v5 output-row-v5"><b>Output</b><pre>For 24 months, the Business plan would cost $2,376.</pre></div></section><section class="final-section-v5"><h4>6. Optional: Tiny Normalize Chain</h4><div class="speak-row-v8"><p class="final-intro-text-v5">Normalize is optional here. It shows the Chain concept: a fixed preprocessing path before the Agent.</p><button class="listen tts-btn-v6 inline-listen-v8" data-text="Normalize is optional here. It shows the Chain concept: a fixed preprocessing path before the Agent." title="Listen" type="button">🔊</button></div><div class="io-row-v5"><b>Input</b><pre>I want Business. What comes with it and how much for twelve months?</pre></div><details class="code-box-v5" open=""><summary>Code</summary><pre class="code-pre-unified-v8"><code>normalize_prompt = ChatPromptTemplate.<span class="tok-func">from_template</span>(
+    <span class="tok-string">"Rewrite this request as one clear sentence:\n\n{question}"</span>
+)
+
+normalize_chain = (
+    normalize_prompt
+    | model
+    | <span class="tok-func">StrOutputParser</span>()
+)
+
+<span class="tok-comment"># INPUT:</span>
+raw_question = (
+    <span class="tok-string">"I want Business. What comes with it "</span>
+<span class="tok-string">"and how much for twelve months?"</span>
+)
+
+<span class="tok-comment"># FIXED CHAIN:</span>
+<span class="tok-comment"># Prompt → Model → Parser</span>
+clean_question = normalize_chain.<span class="tok-func">invoke</span>({
+    <span class="tok-string">"question"</span>: raw_question
+})
+
+<span class="tok-comment"># OUTPUT:</span>
+<span class="tok-builtin">print</span>(clean_question)</code></pre></details><div class="io-row-v5 output-row-v5"><b>Output</b><pre>What features are included in the Business plan, and what is the total cost for 12 months?</pre></div></section></section>
+</div><script id="v6-robust-tts">
+(() => {
+  const synth = window.speechSynthesis;
+  const voiceSelect = document.getElementById('voice');
+  const rateInput = document.getElementById('rate');
+  const stopBtn = document.getElementById('stop');
+  const statusEl = document.getElementById('voiceStatusV6');
+
+  let englishVoices = [];
+  let selectedVoice = null;
+  let currentButton = null;
+
+  function normalize(s) {
+    return (s || '').toLowerCase().replace(/\s+/g, ' ').trim();
+  }
+
+  function scoreVoice(v) {
+    const name = normalize(v.name);
+    const lang = normalize(v.lang);
+    let score = 0;
+
+    // First priority: exact/near-exact Google UK English Female.
+    if (name === 'google uk english female') score += 1000;
+    if (name.includes('google uk english female')) score += 950;
+
+    // Google + UK + Female.
+    if (name.includes('google')) score += 150;
+    if (name.includes('uk') || lang === 'en-gb') score += 160;
+    if (name.includes('female')) score += 120;
+
+    // Other common British female voice names.
+    const femaleHints = [
+      'serena', 'samantha', 'victoria', 'karen', 'moira',
+      'fiona', 'susan', 'hazel', 'kate', 'emily', 'olivia',
+      'sonia', 'libby'
+    ];
+    if (femaleHints.some(x => name.includes(x))) score += 80;
+
+    // Strong preference for British English.
+    if (lang.startsWith('en-gb')) score += 100;
+    else if (lang.startsWith('en')) score += 20;
+
+    // Prefer local voice when otherwise similar.
+    if (v.localService) score += 5;
+
+    return score;
+  }
+
+  function pickDefaultVoice() {
+    if (!englishVoices.length) return null;
+    return [...englishVoices].sort((a, b) => scoreVoice(b) - scoreVoice(a))[0];
+  }
+
+  function populateVoices() {
+    const all = synth.getVoices();
+    englishVoices = all.filter(v => /^en([-_]|$)/i.test(v.lang || ''));
+
+    if (!voiceSelect) return;
+
+    voiceSelect.innerHTML = '';
+
+    if (!englishVoices.length) {
+      const opt = document.createElement('option');
+      opt.value = '';
+      opt.textContent = 'Browser default English voice';
+      voiceSelect.appendChild(opt);
+      selectedVoice = null;
+      if (statusEl) statusEl.textContent = 'Voice: browser default';
+      return;
+    }
+
+    const preferred = pickDefaultVoice();
+
+    englishVoices.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = String(i);
+      opt.textContent = `${v.name} (${v.lang})`;
+      voiceSelect.appendChild(opt);
+
+      if (preferred && v.name === preferred.name && v.lang === preferred.lang) {
+        voiceSelect.value = String(i);
+      }
+    });
+
+    const idx = Number(voiceSelect.value || 0);
+    selectedVoice = englishVoices[idx] || preferred || englishVoices[0];
+
+    if (selectedVoice && statusEl) {
+      const exact = normalize(selectedVoice.name).includes('google uk english female');
+      statusEl.textContent = exact
+        ? 'Default: Google UK English Female'
+        : `Default fallback: ${selectedVoice.name}`;
+    }
+  }
+
+  function refreshVoicesWithRetries() {
+    populateVoices();
+
+    // Chromium often exposes voices asynchronously.
+    [100, 300, 700, 1200, 2000].forEach(ms => {
+      setTimeout(populateVoices, ms);
+    });
+  }
+
+  function clearSpeakingState() {
+    document.querySelectorAll('.tts-btn-v6.speaking')
+      .forEach(b => b.classList.remove('speaking'));
+    currentButton = null;
+  }
+
+  function stopSpeech() {
+    synth.cancel();
+    clearSpeakingState();
+  }
+
+  function speakFromButton(btn) {
+    const text =
+      btn.dataset.text ||
+      btn.dataset.speak ||
+      btn.getAttribute('aria-label-text') ||
+      '';
+
+    if (!text.trim()) return;
+
+    // Clicking the same active button stops it.
+    if (btn.classList.contains('speaking')) {
+      stopSpeech();
+      return;
+    }
+
+    stopSpeech();
+
+    // Re-read voice list in case browser populated it late.
+    if (!englishVoices.length) populateVoices();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+
+    if (voiceSelect && englishVoices.length) {
+      const idx = Number(voiceSelect.value || 0);
+      selectedVoice = englishVoices[idx] || pickDefaultVoice();
+    }
+
+    if (selectedVoice) {
+      utterance.voice = selectedVoice;
+      utterance.lang = selectedVoice.lang || 'en-GB';
+    } else {
+      utterance.lang = 'en-GB';
+    }
+
+    utterance.rate = rateInput ? Number(rateInput.value || 0.95) : 0.95;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+
+    currentButton = btn;
+    btn.classList.add('speaking');
+
+    utterance.onend = clearSpeakingState;
+    utterance.onerror = (e) => {
+      console.warn('Speech synthesis error:', e.error);
+      clearSpeakingState();
+    };
+
+    // Small delay after cancel improves reliability in Chromium.
+    setTimeout(() => synth.speak(utterance), 40);
+  }
+
+  // Event delegation: works for every current/future Listen button.
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.tts-btn-v6, .listen, .speak');
+    if (!btn) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+    speakFromButton(btn);
+  }, true);
+
+  if (stopBtn) {
+    stopBtn.addEventListener('click', e => {
+      e.preventDefault();
+      stopSpeech();
+    }, true);
+  }
+
+  if (voiceSelect) {
+    voiceSelect.addEventListener('change', () => {
+      const idx = Number(voiceSelect.value || 0);
+      selectedVoice = englishVoices[idx] || null;
+      if (statusEl && selectedVoice) {
+        statusEl.textContent = `Voice: ${selectedVoice.name}`;
+      }
+      stopSpeech();
+    });
+  }
+
+  if (rateInput) {
+    rateInput.addEventListener('input', () => {
+      // Changing rate applies to the next playback.
+    });
+  }
+
+  if ('onvoiceschanged' in synth) {
+    synth.onvoiceschanged = populateVoices;
+  }
+
+  window.addEventListener('load', refreshVoicesWithRetries);
+  document.addEventListener('DOMContentLoaded', refreshVoicesWithRetries);
+
+  // Initialize immediately too.
+  refreshVoicesWithRetries();
+})();
+</script><script id="v7-ui-controls">
+(() => {
+  function initTabs() {
+    const tabs = Array.from(document.querySelectorAll('.tab'));
+    const panels = Array.from(document.querySelectorAll('.panel'));
+
+    if (!tabs.length || !panels.length) return;
+
+    function activateTab(tab) {
+      const targetId = tab.dataset.tab;
+      if (!targetId) return;
+
+      tabs.forEach(t => {
+        t.classList.toggle('active', t === tab);
+        t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+      });
+
+      panels.forEach(panel => {
+        panel.classList.toggle('active', panel.id === targetId);
+      });
+    }
+
+    tabs.forEach(tab => {
+      tab.setAttribute('type', 'button');
+
+      tab.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        activateTab(tab);
+      });
+    });
+
+    // Ensure one active tab/panel on load.
+    const current =
+      tabs.find(t => t.classList.contains('active')) ||
+      tabs[0];
+
+    activateTab(current);
+  }
+
+  function initTheme() {
+    const themeBtn = document.getElementById('theme');
+    if (!themeBtn) return;
+
+    themeBtn.setAttribute('type', 'button');
+
+    function updateThemeLabel() {
+      const isLight = document.body.classList.contains('light');
+      themeBtn.textContent = isLight ? '☾ Night Mode' : '☀ Light Mode';
+      themeBtn.setAttribute(
+        'aria-label',
+        isLight ? 'Switch to Night Mode' : 'Switch to Light Mode'
+      );
+    }
+
+    themeBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      document.body.classList.toggle('light');
+      updateThemeLabel();
+    });
+
+    updateThemeLabel();
+  }
+
+  function initDetailsAccessibility() {
+    document.querySelectorAll('details > summary').forEach(summary => {
+      summary.setAttribute('role', 'button');
+    });
+  }
+
+  function initUI() {
+    initTabs();
+    initTheme();
+    initDetailsAccessibility();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initUI);
+  } else {
+    initUI();
+  }
+})();
+</script></body></html>
