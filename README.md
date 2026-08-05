@@ -38,6 +38,7 @@ The guide is English-only and includes:
 | 4 | [Document Q&A / RAG](notebooks/04_document_qa.ipynb) | [Interview + Audio](https://htmlpreview.github.io/?https://github.com/blaire101/langchain-course-companion-26/blob/main/docs/04_document_qa.html) |
 | 5 | [Evaluation](notebooks/05_evaluation.ipynb) | [Interview + Audio](https://htmlpreview.github.io/?https://github.com/blaire101/langchain-course-companion-26/blob/main/docs/05_evaluation.html) |
 | 6 | [Agents & Tools](notebooks/06_agents.ipynb) | [Interview + Audio](https://htmlpreview.github.io/?https://github.com/blaire101/langchain-course-companion-26/blob/main/docs/06_agents.html) |
+| 7 | [Finial-1-6](notebooks/07.ipynb) | [Interview + Audio](https://htmlpreview.github.io/?https://github.com/blaire101/langchain-course-companion-26/blob/main/docs/LangChain_LLM_Agent_Demo.html) |
 
 ## Project Scenario
 
